@@ -1,1 +1,67 @@
-Siema
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Majstrowizja</title>
+  <style>
+    body { font-family: Arial; }
+    .country { margin: 10px 0; }
+    button { margin-left: 10px; }
+  </style>
+</head>
+<body>
+
+<h1>Majstrowizja/h1>
+
+<div id="countries"></div>
+
+<h2>Wyniki:</h2>
+<ul id="results"></ul>
+
+<script>
+const countries = ["Polska", "Niemcy", "Francja", "Włochy"];
+const scores = {};
+
+// inicjalizacja
+countries.forEach(c => scores[c] = 0);
+
+function renderCountries() {
+  const container = document.getElementById("countries");
+  container.innerHTML = "";
+
+  countries.forEach(country => {
+    const div = document.createElement("div");
+    div.className = "country";
+    div.innerHTML = `
+      ${country}
+      <button onclick="vote('${country}')">Głosuj</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function vote(country) {
+  const points = Math.floor(Math.random() * 12) + 1;
+  scores[country] += points;
+  updateResults();
+}
+
+function updateResults() {
+  const results = document.getElementById("results");
+  results.innerHTML = "";
+
+  Object.entries(scores)
+    .sort((a, b) => b[1] - a[1])
+    .forEach(([country, score]) => {
+      const li = document.createElement("li");
+      li.textContent = `${country}: ${score} pkt`;
+      results.appendChild(li);
+    });
+}
+
+renderCountries();
+updateResults();
+</script>
+
+</body>
+</html>
